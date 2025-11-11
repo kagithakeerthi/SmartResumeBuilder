@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Form • Smart Resume Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="stye.css">
+  <link rel="stylesheet" href="stye.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">   <!-- ADD THIS LINE -->
+
+</head>
+<body>
+  <header class="top mini">
+    <button class="link" onclick="location.href='options.html'">← Back</button>
+    <div class="brand">Smart Resume Builder</div>
+  </header>
+
+  <main class="page split-page">
+    <section class="card form-card">
+      <h2>Enter your details 🧾</h2>
+
+      <label>Full name</label>
+      <input id="name" placeholder="Your Name" />
+
+      <div class="two">
+        <div>
+          <label>Email</label>
+          <input id="email" placeholder="you@example.com" />
+        </div>
+        <div>
+          <label>Phone</label>
+          <input id="phone" placeholder="+91 77xxxxxxx" />
+        </div>
+      </div>
+
+      <label>Professional summary</label>
+      <textarea id="summary" rows="3" placeholder="Aspiring student with..."></textarea>
+
+      <label>Education (one per line)</label>
+      <textarea id="education" rows="3" placeholder="B.Tech ACSE - XYZ College, 2023-Present"></textarea>
+
+      <label>Skills (comma separated)</label>
+      <input id="skills" placeholder="Python, SQL, HTML, CSS, JS" />
+
+      <label>Projects (one per line)</label>
+      <textarea id="projects" rows="4" placeholder="Project 1 - short description"></textarea>
+
+      <div class="form-actions">
+        <button id="generateBtn" class="primary-btn">Generate Resume</button>
+        <button id="saveBtn" class="muted-btn">Save & Continue</button>
+        <button id="clearForm" class="outline-btn">Clear</button>
+      </div>
+      <p class="muted small">Saved in browser → can view on Preview page.</p>
+    </section>
+
+    <aside class="card preview-side">
+      <h3>Live Preview 👀</h3>
+      <div id="preview" class="resume-card">
+        <div class="r-head">
+          <h2 id="pv-name">Your Name</h2>
+          <div class="contact"><span id="pv-email">email@example.com</span> • <span id="pv-phone">+91 xxxxx</span></div>
+        </div>
+        <hr />
+        <div class="r-block">
+          <h4>Summary</h4>
+          <p id="pv-summary">Professional summary will appear here.</p>
+        </div>
+        <div class="r-block">
+          <h4>Education</h4>
+          <ul id="pv-ed"> <li>Education details here</li> </ul>
+        </div>
+        <div class="r-block">
+          <h4>Skills</h4>
+          <div id="pv-skills" class="skills-list"><span class="skill">Skill 1</span></div>
+        </div>
+        <div class="r-block">
+          <h4>Projects</h4>
+          <ul id="pv-prj"><li>Project 1</li></ul>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    // form inputs
+    const nameI = document.getElementById('name');
+    const emailI = document.getElementById('email');
+    const phoneI = document.getElementById('phone');
+    const summaryI = document.getElementById('summary');
+    const educationI = document.getElementById('education');
+    const skillsI = document.getElementById('skills');
+    const projectsI = document.getElementById('projects');
+
+    // live preview
+    const pvName = document.getElementById('pv-name');
+    const pvEmail = document.getElementById('pv-email');
+    const pvPhone = document.getElementById('pv-phone');
+    const pvSummary = document.getElementById('pv-summary');
+    const pvEd = document.getElementById('pv-ed');
+    const pvSkills = document.getElementById('pv-skills');
+    const pvPrj = document.getElementById('pv-prj');
+
+    function safe(txt){ return txt.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    function updatePreview(){
+      pvName.textContent = nameI.value || 'Your Name';
+      pvEmail.textContent = emailI.value || 'email@example.com';
+      pvPhone.textContent = phoneI.value || '+91 xxxxx';
+      pvSummary.textContent = summaryI.value || 'Professional summary will appear here.';
+
+      const edLines = educationI.value.split('\n').map(s=>s.trim()).filter(Boolean);
+      pvEd.innerHTML = edLines.length ? edLines.map(l=><li>${safe(l)}</li>).join('') : '<li>Education details here</li>';
+
+      const sk = skillsI.value.split(',').map(s=>s.trim()).filter(Boolean);
+      pvSkills.innerHTML = sk.length ? sk.map(s=><span class="skill">${safe(s)}</span>).join('') : '<span class="skill">Skill 1</span>';
+
+      const pr = projectsI.value.split('\n').map(s=>s.trim()).filter(Boolean);
+      pvPrj.innerHTML = pr.length ? pr.map(l=><li>${safe(l)}</li>).join('') : '<li>Project 1</li>';
+    }
+
+    [nameI,emailI,phoneI,summaryI,educationI,skillsI,projectsI].forEach(el => el.addEventListener('input', updatePreview));
+
+    // Buttons
+    document.getElementById('generateBtn').addEventListener('click', ()=>{
+      const payload = {
+        name:nameI.value, email:emailI.value, phone:phoneI.value,
+        summary:summaryI.value, education:educationI.value,
+        skills:skillsI.value, projects:projectsI.value
+      };
+      localStorage.setItem('sr_resume', JSON.stringify(payload));
+      window.location.href='preview.html';
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', ()=>{
+      const payload = {
+        name:nameI.value, email:emailI.value, phone:phoneI.value,
+        summary:summaryI.value, education:educationI.value,
+        skills:skillsI.value, projects:projectsI.value
+      };
+      localStorage.setItem('sr_resume', JSON.stringify(payload));
+      alert('Saved locally! You can view it on the Preview page.');
+    });
+
+    document.getElementById('clearForm').addEventListener('click', ()=>{
+      if(!confirm('Clear all fields?')) return;
+      [nameI,emailI,phoneI,summaryI,educationI,skillsI,projectsI].forEach(i=>i.value='');
+      updatePreview();
+    });
+
+    // Load saved resume if any
+    window.addEventListener('DOMContentLoaded', ()=>{
+      const saved = localStorage.getItem('sr_resume');
+      if(saved){
+        try{
+          const d = JSON.parse(saved);
+          nameI.value = d.name||''; emailI.value = d.email||''; phoneI.value=d.phone||'';
+          summaryI.value=d.summary||''; educationI.value=d.education||''; skillsI.value=d.skills||''; projectsI.value=d.projects||'';
+        }catch(e){}
+      }
+      updatePreview();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Choose • Smart Resume Builder</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="stye.css">   <!-- ADD THIS LINE -->
+
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Smart Resume Builder</div>
+    <button class="link" onclick="logout()">Logout</button>
+  </header>
+
+  <main class="page center-page">
+    <div class="card options-card">
+      <h2>Hi <span id="userName"></span>! What would you like to do? 😊</h2>
+
+      <div class="options">
+        <div class="opt" id="createNew">
+          <div class="emoji">📝</div>
+          <h3>Create New Resume</h3>
+          <p>Fill your details and generate a fresh resume.</p>
+          <button class="small-btn" onclick="location.href='form.html'">Create</button>
+        </div>
+
+        <div class="opt" id="viewSaved">
+          <div class="emoji">📄</div>
+          <h3>View Saved Resume</h3>
+          <p>Open your last generated resume (if any).</p>
+          <button class="small-btn" onclick="viewSaved()">View</button>
+        </div>
+      </div>
+
+      <p class="muted small">Tip: Use the form page for live preview as you type ✍</p>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    const user = JSON.parse(localStorage.getItem('sr_user'));
+    if(!user){
+      alert('Please login first!');
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('userName').textContent = user.name;
+    }
+
+    function logout(){
+      localStorage.removeItem('sr_user');
+      window.location.href='index.html';
+    }
+
+    function viewSaved(){
+      const data = localStorage.getItem('sr_resume');
+      if(!data){
+        alert('No previous resume found. Create one first!');
+        return;
+      }
+      window.location.href='preview.html';
+    }
+  </script>
+</body>
+</html>

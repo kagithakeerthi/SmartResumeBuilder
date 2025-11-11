@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Preview • Smart Resume Builder</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="stye.css">   <!-- ADD THIS LINE -->
+
+</head>
+<body>
+  <header class="top mini">
+    <button class="link" onclick="location.href='options.html'">← Back</button>
+    <div class="brand">Smart Resume Builder</div>
+    <button class="link" onclick="deleteResume()">Delete</button>
+  </header>
+
+  <main class="page center-page">
+    <div class="card preview-card">
+      <h2>Preview your resume 👀</h2>
+      <div id="resumeContainer" class="resume-card final-resume">
+        <div class="r-head">
+          <h2 id="pv-name">Name</h2>
+          <div class="contact">
+            <span id="pv-email">email@example.com</span> • <span id="pv-phone">+91 xxxxx</span>
+          </div>
+        </div>
+        <hr />
+        <div class="r-block">
+          <h4>Summary</h4>
+          <p id="pv-summary"></p>
+        </div>
+        <div class="r-block">
+          <h4>Education</h4>
+          <ul id="pv-ed"></ul>
+        </div>
+        <div class="r-block">
+          <h4>Skills</h4>
+          <div id="pv-skills" class="skills-list"></div>
+        </div>
+        <div class="r-block">
+          <h4>Projects</h4>
+          <ul id="pv-prj"></ul>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="primary-btn" id="downloadBtn">Download PDF ⬇</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Load saved resume
+    const data = localStorage.getItem('sr_resume');
+    if(!data){
+      alert('No resume found! Create one first.');
+      window.location.href='options.html';
+    } else {
+      const d = JSON.parse(data);
+      document.getElementById('pv-name').textContent = d.name;
+      document.getElementById('pv-email').textContent = d.email;
+      document.getElementById('pv-phone').textContent = d.phone;
+      document.getElementById('pv-summary').textContent = d.summary;
+
+      const edLines = d.education.split('\n').map(s=>s.trim()).filter(Boolean);
+      document.getElementById('pv-ed').innerHTML = edLines.map(l=><li>${l}</li>).join('');
+
+      const sk = d.skills.split(',').map(s=>s.trim()).filter(Boolean);
+      document.getElementById('pv-skills').innerHTML = sk.map(s=><span class="skill">${s}</span>).join('');
+
+      const pr = d.projects.split('\n').map(s=>s.trim()).filter(Boolean);
+      document.getElementById('pv-prj').innerHTML = pr.map(l=><li>${l}</li>).join('');
+    }
+
+    document.getElementById('downloadBtn').addEventListener('click', ()=>{
+      const element = document.getElementById('resumeContainer');
+      html2pdf().set({margin:0.5, filename:'My_Resume.pdf', html2canvas:{scale:2}}).from(element).save();
+    });
+
+    function deleteResume(){
+      if(confirm('Delete your saved resume?')){
+        localStorage.removeItem('sr_resume');
+        alert('Deleted! Create a new resume.');
+        window.location.href='options.html';
+      }
+    }
+  </script>
+</body>
+</html>

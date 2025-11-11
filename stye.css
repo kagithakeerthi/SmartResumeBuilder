@@ -1,0 +1,154 @@
+/* ==============================================================
+   Smart Resume Builder – Modern Glassmorphism + Pastel UI
+   ============================================================== */
+
+:root {
+  --primary: #6c5ce7;          /* main purple */
+  --primary-light: #a29bfe;
+  --accent: #fd79a8;           /* soft pink */
+  --bg: #f5f7fb;
+  --card-bg: rgba(255,255,255,0.85);
+  --text: #2d3436;
+  --text-light: #636e72;
+  --border: #dfe6e9;
+  --shadow: 0 8px 32px rgba(0,0,0,.1);
+  --radius: 16px;
+  --transition: all .3s cubic-bezier(.4,0,.2,1);
+  --glow: 0 0 12px rgba(108,92,231,.4);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #dfe9f3 0%, #ffffff 100%);
+  color: var(--text);
+  line-height:1.6;
+}
+
+/* -------------------------------------------------- Layout */
+.page { max-width:1200px; margin:2rem auto; padding:1rem; }
+.center-page { display:flex; justify-content:center; align-items:center; min-height:70vh; }
+.split-page { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
+
+/* -------------------------------------------------- Cards */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius);
+  padding:2rem;
+  box-shadow: var(--shadow);
+  border:1px solid var(--border);
+  transition: var(--transition);
+}
+.card:hover { transform:translateY(-8px); box-shadow:0 16px 40px rgba(0,0,0,.15); }
+
+.welcome-card, .options-card, .preview-card { max-width:520px; text-align:center; }
+.form-card { position:sticky; top:1rem; }
+
+/* -------------------------------------------------- Header */
+.top {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 2rem; background:rgba(255,255,255,.9);
+  backdrop-filter:blur(10px); border-radius:var(--radius);
+  margin-bottom:1.5rem; box-shadow:0 4px 15px rgba(0,0,0,.05);
+  position:sticky; top:0; z-index:10;
+}
+.mini { padding:.75rem 1.5rem; }
+.brand { font-weight:600; font-size:1.3rem; color:var(--primary); }
+
+/* -------------------------------------------------- Buttons */
+button {
+  font-family:inherit; cursor:pointer; border:none;
+  border-radius:12px; padding:.75rem 1.5rem; font-weight:500;
+  transition:var(--transition); display:inline-flex; align-items:center; gap:.5rem;
+}
+.primary-btn { background:var(--primary); color:#fff; box-shadow:0 4px 15px rgba(108,92,231,.3); }
+.primary-btn:hover { background:#5b4cc7; transform:translateY(-2px); box-shadow:var(--glow); }
+
+.muted-btn { background:#b2bec3; color:#fff; }
+.muted-btn:hover { background:#636e72; }
+
+.outline-btn { background:transparent; border:2px solid var(--border); color:var(--text-light); }
+.outline-btn:hover { border-color:var(--primary); color:var(--primary); background:rgba(108,92,231,.05); }
+
+.small-btn { padding:.5rem 1rem; font-size:.9rem; background:var(--primary-light); color:#fff; }
+.small-btn:hover { background:var(--primary); }
+
+.link { background:none; color:var(--text-light); font-size:.9rem; padding:.5rem 1rem; }
+.link:hover { color:var(--primary); }
+
+/* -------------------------------------------------- Form */
+label { display:block; margin:1rem 0 .4rem; font-weight:500; color:var(--primary); font-size:.95rem; }
+input, textarea {
+  width:100%; padding:.75rem 1rem; border:2px solid var(--border);
+  border-radius:12px; font-family:inherit; font-size:1rem;
+  background:rgba(255,255,255,.7); transition:var(--transition);
+}
+input:focus, textarea:focus {
+  outline:none; border-color:var(--primary);
+  box-shadow:var(--glow); background:#fff;
+}
+.two { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.form-actions { display:flex; gap:1rem; margin-top:1.5rem; flex-wrap:wrap; }
+
+/* -------------------------------------------------- Options Grid */
+.options {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.5rem; margin:2rem 0;
+}
+.opt {
+  background:rgba(252,252,253,.9); padding:1.5rem; border-radius:14px;
+  text-align:center; border:1px dashed var(--border); transition:var(--transition);
+}
+.opt:hover { border-color:var(--primary); background:rgba(108,92,231,.05); transform:scale(1.03); }
+.opt .emoji { font-size:2.5rem; margin-bottom:.5rem; }
+.opt h3 { margin:.5rem 0; color:var(--primary); }
+.opt p { font-size:.9rem; color:var(--text-light); }
+
+/* -------------------------------------------------- Resume Preview */
+.resume-card {
+  background:#fff; padding:2rem; border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,.08); font-size:.95rem; line-height:1.7;
+}
+.final-resume { max-width:800px; margin:2rem auto; font-size:1rem; }
+
+.r-head h2 { font-size:1.8rem; color:var(--primary); margin-bottom:.3rem; }
+.contact { font-size:.95rem; color:var(--text-light); }
+
+.r-block { margin-top:1.2rem; }
+.r-block h4 { color:var(--primary); border-bottom:2px solid var(--primary-light);
+  padding-bottom:.3rem; display:inline-block; }
+
+ul { margin:.6rem 0; padding-left:1.3rem; }
+ul li { margin:.4rem 0; }
+
+.skills-list { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.5rem; }
+.skill { background:var(--primary-light); color:#fff;
+  padding:.35rem .75rem; border-radius:20px; font-size:.85rem; font-weight:500; }
+
+/* -------------------------------------------------- Typography */
+.lead { font-size:1.1rem; margin:1rem 0; color:var(--text); }
+.muted { color:var(--text-light); }
+.small { font-size:.8rem; }
+
+/* -------------------------------------------------- Animations */
+.fade-in { animation:fadeIn .8s ease-out; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:none;} }
+
+input:focus, textarea:focus { animation:pulseGlow 1.5s infinite alternate; }
+@keyframes pulseGlow { from{box-shadow:var(--glow);} to{box-shadow:0 0 20px rgba(108,92,231,.6);} }
+
+/* -------------------------------------------------- Responsive */
+@media (max-width:768px) {
+  .split-page { grid-template-columns:1fr; }
+  .preview-side { order:-1; }
+}
+@media (max-width:600px) {
+  .top { flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; }
+  .brand { font-size:1.1rem; }
+  .card { padding:1.5rem; }
+  .form-actions { flex-direction:column; }
+}
