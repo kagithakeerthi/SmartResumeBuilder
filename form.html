@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Form • Smart Resume Builder</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="stye.css">
-  <link rel="stylesheet" href="stye.css">
-  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">   <!-- ADD THIS LINE -->
-
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="top mini">
@@ -36,24 +31,45 @@
         </div>
       </div>
 
-      <label>Professional summary</label>
-      <textarea id="summary" rows="3" placeholder="Aspiring student with..."></textarea>
+      <div class="two">
+        <div>
+          <label>LinkedIn Profile</label>
+          <input id="linkedin" placeholder="https://linkedin.com/in/yourname" />
+        </div>
+        <div>
+          <label>GitHub Profile</label>
+          <input id="github" placeholder="https://github.com/yourname" />
+        </div>
+      </div>
+
+      <label>Professional Summary</label>
+      <textarea id="summary" rows="3" placeholder="Aspiring Data Analyst skilled in Python, SQL..."></textarea>
 
       <label>Education (one per line)</label>
       <textarea id="education" rows="3" placeholder="B.Tech ACSE - XYZ College, 2023-Present"></textarea>
 
+      <label>Experience (one per line)</label>
+      <textarea id="experience" rows="3" placeholder="Intern - Data Analytics at ABC Company (Jun 2024 - Aug 2024)"></textarea>
+
       <label>Skills (comma separated)</label>
-      <input id="skills" placeholder="Python, SQL, HTML, CSS, JS" />
+      <input id="skills" placeholder="Python, SQL, HTML, CSS, React, Excel" />
 
       <label>Projects (one per line)</label>
-      <textarea id="projects" rows="4" placeholder="Project 1 - short description"></textarea>
+      <textarea id="projects" rows="4" placeholder="AI-based Faculty Timetable Optimizer - automated scheduling system"></textarea>
+
+      <label>Certifications (one per line)</label>
+      <textarea id="certifications" rows="3" placeholder="Cisco Python Essentials – 2024"></textarea>
+
+      <label>Achievements (one per line)</label>
+      <textarea id="achievements" rows="3" placeholder="Secured 2nd place in Coding Hackathon 2024"></textarea>
 
       <div class="form-actions">
         <button id="generateBtn" class="primary-btn">Generate Resume</button>
         <button id="saveBtn" class="muted-btn">Save & Continue</button>
         <button id="clearForm" class="outline-btn">Clear</button>
       </div>
-      <p class="muted small">Saved in browser → can view on Preview page.</p>
+
+      <p class="muted small">Your data is saved locally. You can preview anytime.</p>
     </section>
 
     <aside class="card preview-side">
@@ -61,108 +77,58 @@
       <div id="preview" class="resume-card">
         <div class="r-head">
           <h2 id="pv-name">Your Name</h2>
-          <div class="contact"><span id="pv-email">email@example.com</span> • <span id="pv-phone">+91 xxxxx</span></div>
+          <div class="contact">
+            <span id="pv-email">email@example.com</span> • 
+            <span id="pv-phone">+91 xxxxx</span>
+          </div>
+          <div class="links small muted">
+            <span id="pv-linkedin">LinkedIn</span> • <span id="pv-github">GitHub</span>
+          </div>
         </div>
         <hr />
-        <div class="r-block">
-          <h4>Summary</h4>
-          <p id="pv-summary">Professional summary will appear here.</p>
-        </div>
-        <div class="r-block">
-          <h4>Education</h4>
-          <ul id="pv-ed"> <li>Education details here</li> </ul>
-        </div>
-        <div class="r-block">
-          <h4>Skills</h4>
-          <div id="pv-skills" class="skills-list"><span class="skill">Skill 1</span></div>
-        </div>
-        <div class="r-block">
-          <h4>Projects</h4>
-          <ul id="pv-prj"><li>Project 1</li></ul>
-        </div>
+        <div class="r-block"><h4>Summary</h4><p id="pv-summary"></p></div>
+        <div class="r-block"><h4>Education</h4><ul id="pv-ed"></ul></div>
+        <div class="r-block"><h4>Experience</h4><ul id="pv-exp"></ul></div>
+        <div class="r-block"><h4>Skills</h4><div id="pv-skills" class="skills-list"></div></div>
+        <div class="r-block"><h4>Projects</h4><ul id="pv-prj"></ul></div>
+        <div class="r-block"><h4>Certifications</h4><ul id="pv-cert"></ul></div>
+        <div class="r-block"><h4>Achievements</h4><ul id="pv-ach"></ul></div>
       </div>
     </aside>
   </main>
 
-  <script src="app.js"></script>
   <script>
-    // form inputs
-    const nameI = document.getElementById('name');
-    const emailI = document.getElementById('email');
-    const phoneI = document.getElementById('phone');
-    const summaryI = document.getElementById('summary');
-    const educationI = document.getElementById('education');
-    const skillsI = document.getElementById('skills');
-    const projectsI = document.getElementById('projects');
+    const nameI=$('#name'), emailI=$('#email'), phoneI=$('#phone'),
+          linkedinI=$('#linkedin'), githubI=$('#github'),
+          summaryI=$('#summary'), educationI=$('#education'), experienceI=$('#experience'),
+          skillsI=$('#skills'), projectsI=$('#projects'),
+          certificationsI=$('#certifications'), achievementsI=$('#achievements');
 
-    // live preview
-    const pvName = document.getElementById('pv-name');
-    const pvEmail = document.getElementById('pv-email');
-    const pvPhone = document.getElementById('pv-phone');
-    const pvSummary = document.getElementById('pv-summary');
-    const pvEd = document.getElementById('pv-ed');
-    const pvSkills = document.getElementById('pv-skills');
-    const pvPrj = document.getElementById('pv-prj');
+    const pvName=$('#pv-name'), pvEmail=$('#pv-email'), pvPhone=$('#pv-phone'),
+          pvLinkedin=$('#pv-linkedin'), pvGithub=$('#pv-github'),
+          pvSummary=$('#pv-summary'), pvEd=$('#pv-ed'), pvExp=$('#pv-exp'),
+          pvSkills=$('#pv-skills'), pvPrj=$('#pv-prj'),
+          pvCert=$('#pv-cert'), pvAch=$('#pv-ach');
 
-    function safe(txt){ return txt.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+    function safe(t){ return t.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
     function updatePreview(){
-      pvName.textContent = nameI.value || 'Your Name';
-      pvEmail.textContent = emailI.value || 'email@example.com';
-      pvPhone.textContent = phoneI.value || '+91 xxxxx';
-      pvSummary.textContent = summaryI.value || 'Professional summary will appear here.';
-
-      const edLines = educationI.value.split('\n').map(s=>s.trim()).filter(Boolean);
-      pvEd.innerHTML = edLines.length ? edLines.map(l=><li>${safe(l)}</li>).join('') : '<li>Education details here</li>';
-
-      const sk = skillsI.value.split(',').map(s=>s.trim()).filter(Boolean);
-      pvSkills.innerHTML = sk.length ? sk.map(s=><span class="skill">${safe(s)}</span>).join('') : '<span class="skill">Skill 1</span>';
-
-      const pr = projectsI.value.split('\n').map(s=>s.trim()).filter(Boolean);
-      pvPrj.innerHTML = pr.length ? pr.map(l=><li>${safe(l)}</li>).join('') : '<li>Project 1</li>';
+      pvName.textContent=nameI.value||'Your Name';
+      pvEmail.textContent=emailI.value||'email@example.com';
+      pvPhone.textContent=phoneI.value||'+91 xxxxx';
+      pvLinkedin.textContent=linkedinI.value||'LinkedIn';
+      pvGithub.textContent=githubI.value||'GitHub';
+      pvSummary.textContent=summaryI.value||'Professional summary will appear here.';
+      pvEd.innerHTML=educationI.value.split('\n').filter(Boolean).map(l=><li>${safe(l)}</li>).join('')||'<li>Education details here</li>';
+      pvExp.innerHTML=experienceI.value.split('\n').filter(Boolean).map(l=><li>${safe(l)}</li>).join('')||'<li>No experience added</li>';
+      pvSkills.innerHTML=skillsI.value.split(',').filter(Boolean).map(s=><span class="skill">${safe(s)}</span>).join('')||'<span class="skill">Skill 1</span>';
+      pvPrj.innerHTML=projectsI.value.split('\n').filter(Boolean).map(l=><li>${safe(l)}</li>).join('')||'<li>No projects yet</li>';
+      pvCert.innerHTML=certificationsI.value.split('\n').filter(Boolean).map(l=><li>${safe(l)}</li>).join('')||'<li>No certifications yet</li>';
+      pvAch.innerHTML=achievementsI.value.split('\n').filter(Boolean).map(l=><li>${safe(l)}</li>).join('')||'<li>No achievements yet</li>';
     }
 
-    [nameI,emailI,phoneI,summaryI,educationI,skillsI,projectsI].forEach(el => el.addEventListener('input', updatePreview));
-
-    // Buttons
-    document.getElementById('generateBtn').addEventListener('click', ()=>{
-      const payload = {
-        name:nameI.value, email:emailI.value, phone:phoneI.value,
-        summary:summaryI.value, education:educationI.value,
-        skills:skillsI.value, projects:projectsI.value
-      };
-      localStorage.setItem('sr_resume', JSON.stringify(payload));
-      window.location.href='preview.html';
-    });
-
-    document.getElementById('saveBtn').addEventListener('click', ()=>{
-      const payload = {
-        name:nameI.value, email:emailI.value, phone:phoneI.value,
-        summary:summaryI.value, education:educationI.value,
-        skills:skillsI.value, projects:projectsI.value
-      };
-      localStorage.setItem('sr_resume', JSON.stringify(payload));
-      alert('Saved locally! You can view it on the Preview page.');
-    });
-
-    document.getElementById('clearForm').addEventListener('click', ()=>{
-      if(!confirm('Clear all fields?')) return;
-      [nameI,emailI,phoneI,summaryI,educationI,skillsI,projectsI].forEach(i=>i.value='');
-      updatePreview();
-    });
-
-    // Load saved resume if any
-    window.addEventListener('DOMContentLoaded', ()=>{
-      const saved = localStorage.getItem('sr_resume');
-      if(saved){
-        try{
-          const d = JSON.parse(saved);
-          nameI.value = d.name||''; emailI.value = d.email||''; phoneI.value=d.phone||'';
-          summaryI.value=d.summary||''; educationI.value=d.education||''; skillsI.value=d.skills||''; projectsI.value=d.projects||'';
-        }catch(e){}
-      }
-      updatePreview();
-    });
+    [nameI,emailI,phoneI,linkedinI,githubI,summaryI,educationI,experienceI,skillsI,projectsI,certificationsI,achievementsI].forEach(el => el.addEventListener('input', updatePreview));
+    window.addEventListener('DOMContentLoaded', updatePreview);
   </script>
 </body>
 </html>
