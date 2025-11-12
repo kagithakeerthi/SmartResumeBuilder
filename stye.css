@@ -65,7 +65,7 @@ button {
   border-radius:12px; padding:.75rem 1.5rem; font-weight:500;
   transition:var(--transition); display:inline-flex; align-items:center; gap:.5rem;
 }
-.primary-btn { background:var(--primary); color:#fff; box-shadow:0 4px 15px rgba(108,92,231,.3); }
+.primary-btn { background:var(--primary); color:#fff; box-shadow:0 4px 15px rgba(108,92,231,.3);margin-top:30px;margin-bottom:20px;}
 .primary-btn:hover { background:#5b4cc7; transform:translateY(-2px); box-shadow:var(--glow); }
 
 .muted-btn { background:#b2bec3; color:#fff; }
